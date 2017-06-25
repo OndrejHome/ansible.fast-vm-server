@@ -56,6 +56,11 @@ Role Variables
     install_fence_virtd: true
     ```
 
+  - install custom version of qemu-kvm,qemu-img and seabios-bin to support LSI and MEGASAS emaulated drivers
+    ```
+    install_custom_qemu: true
+    ```
+
   - group with access to fast-vm
     - **required by:** *config_libvirt_access, config_sudoers, config_fastvm_conf*
     ```

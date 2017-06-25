@@ -1,0 +1,7 @@
+---
+- name: install custom qemu-kvm, qemu-img and seabios-bin packages
+  yum: name="{{ item }}" state=present
+  with_items:
+    - qemu-kvm*+megasas+lsi
+    - qemu-img*+megasas+lsi
+    - seabios-bin*+megasas+lsi

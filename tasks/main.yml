@@ -87,3 +87,7 @@
 - name: install_fence_virtd
   include: install_fence_virtd.yml
   when: install_fence_virtd == true
+
+- name: install_custom_qemu
+  include: install_custom_qemu.yml
+  when: install_custom_qemu == true

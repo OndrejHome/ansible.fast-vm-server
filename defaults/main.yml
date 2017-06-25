@@ -19,6 +19,8 @@ config_fastvm_conf: true
 install_ovmf: true
 ## install and configure fence_virtd that can be used to fence the fast-vm VMs using fence_xvm
 install_fence_virtd: true
+## install custom version of qemu-kvm,qemu-img and seabios-bin to support LSI and MEGASAS emaulated drivers
+install_custom_qemu: true
 
 ### variable that are required by some areas from above
 # all variable has list of 'required by' on which above options needs them
