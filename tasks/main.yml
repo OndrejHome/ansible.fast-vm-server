@@ -1,0 +1,82 @@
+---
+- name: add and enable fast-vm yum repository
+  when: config_repositories == true
+  yum_repository:
+    name: ondrejhome-fast-vm
+    description: Copr repo for fast-vm owned by ondrejhome
+    baseurl: https://copr-be.cloud.fedoraproject.org/results/ondrejhome/fast-vm/epel-7-$basearch/
+    skip_if_unavailable: yes
+    gpgkey: https://copr-be.cloud.fedoraproject.org/results/ondrejhome/fast-vm/pubkey.gpg
+    enabled: yes
+    gpgcheck: yes
+    repo_gpgcheck: no
+
+- name: enable optional RPMs repository on RHEL systems
+  shell: subscription-manager repos --enable=rhel-7-server-optional-rpms
+  when: config_repositories == true and ansible_distribution == 'RedHat'
+
+- name: install packages
+  when: install_fastvm == true
+  yum: name="{{ item }}" state=present
+  with_items:
+    - fast-vm
+    - dnsmasq-utils
+    - libguestfs-tools-c
+    - bash-completion
+    - python-lxml
+    - libvirt-python
+
+- name: libvirt unix_sock_group
+  lineinfile: dest=/etc/libvirt/libvirtd.conf regexp="unix_sock_group = " line="unix_sock_group = \"{{ fastvm_group }}\""
+  notify: restart libvirtd service
+  when: config_libvirt_access == true
+
+- name: libvirt unix_sock_rw_perms
+  lineinfile: dest=/etc/libvirt/libvirtd.conf regexp="unix_sock_rw_perms = " line="unix_sock_rw_perms = \"0770\""
+  notify: restart libvirtd service
+  when: config_libvirt_access == true
+
+- name: libvirt auth_unix_ro
+  lineinfile: dest=/etc/libvirt/libvirtd.conf regexp="auth_unix_ro = " line="auth_unix_ro = \"none\""
+  notify: restart libvirtd service
+  when: config_libvirt_access == true
+
+- name: libvirt auth_unix_rw
+  lineinfile: dest=/etc/libvirt/libvirtd.conf regexp="auth_unix_rw = " line="auth_unix_rw = \"none\""
+  notify: restart libvirtd service
+  when: config_libvirt_access == true
+
+- meta: flush_handlers
+  when: config_libvirt_access == true
+
+- name: ensure that libvirtd service is enabled and started
+  service: name=libvirtd state=started enabled=yes
+  when: config_libvirt_network == true
+
+- name: define fast-vm-nat libvirt network
+  when: config_libvirt_network == true
+  virt_net:
+    command: define
+    autostart: yes
+    name: '{{ fastvm_net_name }}'
+    xml: '{{ lookup("template", "fast-vm-nat.xml.j2") }}'
+
+- name: start and enable on boot fast-vm-nat libvirt network
+  when: config_libvirt_network == true
+  virt_net:
+    state: active
+    autostart: yes
+    name: '{{ fastvm_net_name }}'
+
+- name: create a thinpool LV for fast-vm storage
+  lvol: vg={{ fastvm_vg }} size={{ fastvm_lv_size }} lv={{ fastvm_lv }} opts='-T' state=present
+  when: config_storage == true
+
+- name: configure group in for fast-vm access in sudoers
+  lineinfile: dest=/etc/sudoers.d/fast-vm-sudoers regexp='.*/usr/libexec/fast-vm-helper.sh$' line="%{{ fastvm_group }} ALL=(root) NOPASSWD{{ ':' }} /usr/libexec/fast-vm-helper.sh"
+  when: config_sudoers == true
+
+- name: configure fast-vm.conf
+  template: src=fast-vm.conf.j2 dest=/etc/fast-vm.conf
+  when: config_fastvm_conf == true
+
