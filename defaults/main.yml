@@ -15,6 +15,8 @@ config_storage: true
 config_sudoers: true
 ## generate /etc/fast.conf configuration file
 config_fastvm_conf: true
+## install OVMF UEFI firmware needed by UEFI fast-vm machines
+install_ovmf: true
 
 ### variable that are required by some areas from above
 # all variable has list of 'required by' on which above options needs them

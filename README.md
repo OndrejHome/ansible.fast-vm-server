@@ -46,6 +46,11 @@ Role Variables
     config_fastvm_conf: true
     ```
 
+  - install OVMF UEFI firmware needed by UEFI fast-vm machines
+    ```
+    install_ovmf: true
+    ```
+
   - group with access to fast-vm
     - **required by:** *config_libvirt_access, config_sudoers, config_fastvm_conf*
     ```

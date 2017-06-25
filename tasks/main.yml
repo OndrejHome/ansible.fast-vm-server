@@ -80,3 +80,6 @@
   template: src=fast-vm.conf.j2 dest=/etc/fast-vm.conf
   when: config_fastvm_conf == true
 
+- name: install_ovmf
+  include: install_ovmf.yml
+  when: install_ovmf == true
