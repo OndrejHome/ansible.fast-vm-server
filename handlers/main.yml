@@ -1,3 +1,6 @@
 ---
 - name: restart libvirtd service
   service: name=libvirtd state=restarted
+
+- name: restart fence_virtd service
+  service: name=fence_virtd state=restarted

@@ -17,6 +17,8 @@ config_sudoers: true
 config_fastvm_conf: true
 ## install OVMF UEFI firmware needed by UEFI fast-vm machines
 install_ovmf: true
+## install and configure fence_virtd that can be used to fence the fast-vm VMs using fence_xvm
+install_fence_virtd: true
 
 ### variable that are required by some areas from above
 # all variable has list of 'required by' on which above options needs them
@@ -42,7 +44,7 @@ fastvm_lv_size: 50G
 fastvm_net: 42
 
 ## name of fast-vm NAT libvirt network
-# required by: config_libvirt_network, config_fastvm_conf
+# required by: config_libvirt_network, config_fastvm_conf, install_fence_virt
 fastvm_net_name: fast-vm-nat
 
 ## prefix for fast-vm VMs
@@ -56,3 +58,7 @@ fastvm_notes_dir: '/var/tmp'
 ## Allow only owners of VMs and 'root' to delete them
 # required by: config_fastvm_conf
 fastvm_owner_only_delete: 'yes'
+
+## Multicast address of fence_virt daemon
+# required by: install_fence_virt
+fence_virtd_address: '225.0.0.12'

@@ -51,6 +51,11 @@ Role Variables
     install_ovmf: true
     ```
 
+  - install and configure fence_virtd that can be used to fence the fast-vm VMs using fence_xvm
+    ```
+    install_fence_virtd: true
+    ```
+
   - group with access to fast-vm
     - **required by:** *config_libvirt_access, config_sudoers, config_fastvm_conf*
     ```
@@ -82,7 +87,7 @@ Role Variables
     ```
 
   - name of fast-vm NAT libvirt network
-    - **required by:** *config_libvirt_network, config_fastvm_conf*
+    - **required by:** *config_libvirt_network, config_fastvm_conf, install_fence_virt*
     ```
     fastvm_net_name: fast-vm-nat
     ```
@@ -103,6 +108,12 @@ Role Variables
     - **required by:** *config_fastvm_conf*
     ```
     fastvm_owner_only_delete: 'yes'
+    ```
+
+  - Multicast address of fence_virt daemon
+    - **required by:** *install_fence_virt*
+    ```
+    fence_virtd_address: '225.0.0.12'
     ```
 
 Example Playbook

@@ -1,0 +1,18 @@
+fence_virtd {
+        listener = "multicast";
+        backend = "libvirt";
+}
+
+listeners {
+        multicast {
+                key_file = "/etc/cluster/fence_xvm.key";
+                address = "{{ fence_virtd_address }}";
+                interface = "{{ fastvm_net_name }}";
+        }
+}
+
+backends {
+        libvirt { 
+                uri = "qemu:///system";
+        }
+}

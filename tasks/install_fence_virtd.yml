@@ -1,0 +1,33 @@
+---
+- name: install fence_virtd packages
+  yum: name="{{ item }}" state=present
+  with_items:
+    - fence-virtd
+    - fence-virtd-libvirt
+    - fence-virtd-multicast
+
+- name: create /etc/cluster directory
+  file: path="/etc/cluster" state=directory
+
+- name: generate fence_xvm key
+  command: dd if=/dev/urandom of=/etc/cluster/fence_xvm.key bs=4k count=1
+  notify: restart fence_virtd service
+  args:
+    creates: /etc/cluster/fence_xvm.key
+
+- name: make fence_xvm.key readable by everyone
+  file: path="/etc/cluster/fence_xvm.key" mode=0644
+  notify: restart fence_virtd service
+
+- name: generate /etc/fence_virt.conf configuration
+  template: src=fence_virt.conf.j2 dest=/etc/fence_virt.conf mode=0644
+  notify: restart fence_virtd service
+
+- name: configure firewall for fence_virtd
+  firewalld: port="{{ item }}" permanent=true state=enabled immediate=true
+  with_items:
+    - "1229/tcp"
+    - "1229/udp"
+
+- name: start and enable fence_virtd service
+  service: name=fence_virtd state=started enabled=yes
