@@ -68,6 +68,9 @@
     autostart: yes
     name: '{{ fastvm_net_name }}'
 
+- name: virt_net issue workaround - make the fast-vm-nat network to autostart
+  file: path="/etc/libvirt/qemu/networks/autostart/{{ fastvm_net_name }}.xml" src="../{{ fastvm_net_name }}.xml" state='link'
+
 - name: create a thinpool LV for fast-vm storage
   lvol: vg={{ fastvm_vg }} size={{ fastvm_lv_size }} lv={{ fastvm_lv }} opts='-T' state=present
   when: config_storage == true
