@@ -14,6 +14,7 @@
 - name: enable optional RPMs repository on RHEL systems
   shell: subscription-manager repos --enable=rhel-7-server-optional-rpms
   when: config_repositories == true and ansible_distribution == 'RedHat'
+  ignore_errors: True
 
 - name: install packages
   when: install_fastvm == true
