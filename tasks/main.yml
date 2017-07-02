@@ -1,10 +1,14 @@
 ---
+
+- name: Include distribution specific variables
+  include_vars: "{{ ansible_distribution }}.yml"
+
 - name: add and enable fast-vm yum repository
   when: config_repositories == true
   yum_repository:
     name: ondrejhome-fast-vm
     description: Copr repo for fast-vm owned by ondrejhome
-    baseurl: https://copr-be.cloud.fedoraproject.org/results/ondrejhome/fast-vm/epel-7-$basearch/
+    baseurl: "{{ baseurl }}"
     skip_if_unavailable: yes
     gpgkey: https://copr-be.cloud.fedoraproject.org/results/ondrejhome/fast-vm/pubkey.gpg
     enabled: yes
@@ -16,8 +20,8 @@
   when: config_repositories == true and ansible_distribution == 'RedHat'
   ignore_errors: True
 
-- name: install packages
-  when: install_fastvm == true
+- name: yum install packages
+  when: install_fastvm == true and ansible_distribution != 'Fedora'
   yum: name="{{ item }}" state=present
   with_items:
     - fast-vm
@@ -26,6 +30,18 @@
     - bash-completion
     - python-lxml
     - libvirt-python
+
+- name: dnf install packages
+  when: install_fastvm == true and ansible_distribution == 'Fedora'
+  dnf: name="{{ item }}" state=present
+  with_items:
+    - fast-vm
+    - dnsmasq-utils
+    - libguestfs-tools-c
+    - bash-completion
+    - python-lxml
+    - libvirt-python
+    - libselinux-python
 
 - name: libvirt unix_sock_group
   lineinfile: dest=/etc/libvirt/libvirtd.conf regexp="unix_sock_group = " line="unix_sock_group = \"{{ fastvm_group }}\""
@@ -84,9 +100,13 @@
   template: src=fast-vm.conf.j2 dest=/etc/fast-vm.conf
   when: config_fastvm_conf == true
 
-- name: install_ovmf
+- name: install_ovmf (CentOS/RHEL)
   include: install_ovmf.yml
-  when: install_ovmf == true
+  when: install_ovmf == true and ansible_distribution != 'Fedora'
+
+- name: install_ovmf (Fedora)
+  include: install_ovmf_fedora.yml
+  when: install_ovmf == true and ansible_distribution == 'Fedora'
 
 - name: install_fence_virtd
   include: install_fence_virtd.yml
@@ -94,4 +114,4 @@
 
 - name: install_custom_qemu
   include: install_custom_qemu.yml
-  when: install_custom_qemu == true
+  when: install_custom_qemu == true and ansible_distribution != 'Fedora'

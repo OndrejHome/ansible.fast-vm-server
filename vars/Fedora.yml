@@ -1,0 +1,2 @@
+---
+baseurl: 'https://copr-be.cloud.fedoraproject.org/results/ondrejhome/fast-vm/fedora-$releasever-$basearch/'

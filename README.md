@@ -6,7 +6,7 @@ This role configures OS for use with fast-vm and installs and configures the fas
 Requirements
 ------------
 
-This roles was tested only on CentOS/RHEL 7.3. On RHEL systems this role expects that system is properly registered so it can download and install packages.
+This roles was tested only on CentOS/RHEL 7.3 and Fedora 25. On RHEL systems this role expects that system is properly registered so it can download and install packages.
 
 Role Variables
 --------------
