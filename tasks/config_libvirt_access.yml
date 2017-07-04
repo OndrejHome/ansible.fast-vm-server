@@ -1,0 +1,18 @@
+---
+- name: libvirt unix_sock_group
+  lineinfile: dest=/etc/libvirt/libvirtd.conf regexp="unix_sock_group = " line="unix_sock_group = \"{{ fastvm_group }}\""
+  notify: restart libvirtd service
+
+- name: libvirt unix_sock_rw_perms
+  lineinfile: dest=/etc/libvirt/libvirtd.conf regexp="unix_sock_rw_perms = " line="unix_sock_rw_perms = \"0770\""
+  notify: restart libvirtd service
+
+- name: libvirt auth_unix_ro
+  lineinfile: dest=/etc/libvirt/libvirtd.conf regexp="auth_unix_ro = " line="auth_unix_ro = \"none\""
+  notify: restart libvirtd service
+
+- name: libvirt auth_unix_rw
+  lineinfile: dest=/etc/libvirt/libvirtd.conf regexp="auth_unix_rw = " line="auth_unix_rw = \"none\""
+  notify: restart libvirtd service
+
+- meta: flush_handlers

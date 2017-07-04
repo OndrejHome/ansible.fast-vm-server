@@ -1,0 +1,18 @@
+---
+- name: add and enable fast-vm yum repository
+  when: config_repositories == true
+  yum_repository:
+    name: ondrejhome-fast-vm
+    description: Copr repo for fast-vm owned by ondrejhome
+    baseurl: "{{ baseurl }}"
+    skip_if_unavailable: yes
+    gpgkey: https://copr-be.cloud.fedoraproject.org/results/ondrejhome/fast-vm/pubkey.gpg
+    enabled: yes
+    gpgcheck: yes
+    repo_gpgcheck: no
+
+- name: enable optional RPMs repository on RHEL systems
+  shell: subscription-manager repos --enable=rhel-7-server-optional-rpms
+  when: config_repositories == true and ansible_distribution == 'RedHat'
+  ignore_errors: True
+  ## we ignore if this fails because we might have access to needed packages via other repository
