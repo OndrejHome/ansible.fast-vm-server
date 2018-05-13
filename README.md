@@ -6,7 +6,7 @@ This role configures OS for use with fast-vm and installs and configures the fas
 Requirements
 ------------
 
-This roles was tested only on CentOS/RHEL 7.3 and Fedora 25. On RHEL systems this role expects that system is properly registered so it can download and install packages.
+This roles was tested only on CentOS/RHEL 7.5 and Fedora 25. On RHEL systems this role expects that system is properly registered so it can download and install packages.
 
 Role Variables
 --------------
@@ -101,12 +101,6 @@ Role Variables
     - **required by:** *config_fastvm_conf*
     ```
     fastvm_vm_prefix: 'fastvm-'
-    ```
-
-  - fast-vm notes directory - here fast-vm stores VM notes and other VM stateful details
-    - **required by:** *config_fastvm_conf*
-    ```
-    fastvm_notes_dir: '/var/tmp'
     ```
 
   - Allow only owners of VMs and 'root' to delete them
