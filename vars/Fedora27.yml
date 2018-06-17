@@ -1,2 +1,15 @@
 ---
 baseurl: 'https://copr-be.cloud.fedoraproject.org/results/ondrejhome/fast-vm/fedora-$releasever-$basearch/'
+dnf_packages_fastvm:
+  - fast-vm
+  - dnsmasq-utils
+  - libguestfs-tools-c
+  - bash-completion
+  - python-lxml
+  - libvirt-python
+  - libselinux-python
+dnf_packages_fence_virtd:
+  - fence-virtd
+  - fence-virtd-libvirt
+  - fence-virtd-multicast
+  - python-firewall

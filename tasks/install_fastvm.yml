@@ -2,25 +2,12 @@
 - name: yum install packages
   when: ansible_distribution != 'Fedora'
   yum: name="{{ item }}" state=present
-  with_items:
-    - fast-vm
-    - dnsmasq-utils
-    - libguestfs-tools-c
-    - bash-completion
-    - python-lxml
-    - libvirt-python
+  with_items: "{{ yum_packages_fastvm }}"
 
 - name: dnf install packages
   when: ansible_distribution == 'Fedora'
   dnf: name="{{ item }}" state=present
-  with_items:
-    - fast-vm
-    - dnsmasq-utils
-    - libguestfs-tools-c
-    - bash-completion
-    - python-lxml
-    - libvirt-python
-    - libselinux-python
+  with_items: "{{ dnf_packages_fastvm }}"
 
 - name: enable libvirtd service on boot
   service: name=libvirtd enabled=yes
