@@ -10,8 +10,7 @@ galaxy_info:
     - 7
   - name: Fedora
     versions:
-    - 25
-    - 26
+    - 27
   galaxy_tags:
   - system
 dependencies: []
