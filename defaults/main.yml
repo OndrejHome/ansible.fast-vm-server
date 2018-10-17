@@ -53,10 +53,6 @@ fastvm_net_name: fast-vm-nat
 # required by: config_fastvm_conf
 fastvm_vm_prefix: 'fastvm-'
 
-## fast-vm notes directory - here fast-vm stores VM notes and other VM stateful details
-# required by: config_fastvm_conf
-fastvm_notes_dir: '/var/tmp'
-
 ## Allow only owners of VMs and 'root' to delete them
 # required by: config_fastvm_conf
 fastvm_owner_only_delete: 'yes'
