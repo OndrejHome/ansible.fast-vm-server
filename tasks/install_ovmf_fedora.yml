@@ -6,15 +6,15 @@
   file: path="/usr/share/OVMF/" state=directory
 
 - name: symlink the OVMF_CODE
-  file: 
-    path: "/usr/share/OVMF/OVMF_CODE.fd" 
+  file:
+    path: "/usr/share/OVMF/OVMF_CODE.fd"
     src: "/usr/share/edk2/ovmf/OVMF_CODE.fd"
     state: link
     force: yes
 
 - name: symlink the OVMF_VARS
-  file: 
-    path: "/usr/share/OVMF/OVMF_VARS.fd" 
+  file:
+    path: "/usr/share/OVMF/OVMF_VARS.fd"
     src: "/usr/share/edk2/ovmf/OVMF_VARS.fd"
     state: link
     force: yes

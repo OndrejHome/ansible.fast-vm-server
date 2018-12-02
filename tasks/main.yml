@@ -5,44 +5,44 @@
 
 - name: config_repositories
   include: config_repositories.yml
-  when: config_repositories == true
+  when: config_repositories|bool
 
 - name: install_fastvm
   include: install_fastvm.yml
-  when: install_fastvm == true
+  when: install_fastvm|bool
 
 - name: config_libvirt_access
   include: config_libvirt_access.yml
-  when: config_libvirt_access == true
+  when: config_libvirt_access|bool
 
 - name: config_libvirt_network
   include: config_libvirt_network.yml
-  when: config_libvirt_network == true
+  when: config_libvirt_network|bool
 
 - name: create a thinpool LV for fast-vm storage
   lvol: vg={{ fastvm_vg }} size={{ fastvm_lv_size }} lv={{ fastvm_lv }} opts='-T' state=present
-  when: config_storage == true
+  when: config_storage|bool
 
 - name: configure group in for fast-vm access in sudoers
   lineinfile: dest=/etc/sudoers.d/fast-vm-sudoers regexp='.*/usr/libexec/fast-vm-helper.sh$' line="%{{ fastvm_group }} ALL=(root) NOPASSWD{{ ':' }} /usr/libexec/fast-vm-helper.sh"
-  when: config_sudoers == true
+  when: config_sudoers|bool
 
 - name: configure fast-vm.conf
   template: src=fast-vm.conf.j2 dest=/etc/fast-vm.conf
-  when: config_fastvm_conf == true
+  when: config_fastvm_conf|bool
 
 - name: install_ovmf (CentOS/RHEL)
   include: install_ovmf.yml
-  when: install_ovmf == true and ansible_distribution != 'Fedora'
+  when: install_ovmf|bool and ansible_distribution != 'Fedora'
 
 - name: install_ovmf (Fedora)
   include: install_ovmf_fedora.yml
-  when: install_ovmf == true and ansible_distribution == 'Fedora'
+  when: install_ovmf|bool and ansible_distribution == 'Fedora'
 
 - name: install_fence_virtd
   include: install_fence_virtd.yml
-  when: install_fence_virtd == true
+  when: install_fence_virtd|bool
 
 - name: install_custom_qemu
   include: install_custom_qemu.yml
-  when: install_custom_qemu == true and ansible_distribution != 'Fedora'
+  when: install_custom_qemu|bool and ansible_distribution != 'Fedora'

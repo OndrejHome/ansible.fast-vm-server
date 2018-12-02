@@ -17,15 +17,15 @@
   file: path="/usr/share/OVMF/" state=directory
 
 - name: symlink the OVMF_CODE
-  file: 
-    path: "/usr/share/OVMF/OVMF_CODE.fd" 
+  file:
+    path: "/usr/share/OVMF/OVMF_CODE.fd"
     src: "/usr/share/edk2.git/ovmf-x64/OVMF_CODE-pure-efi.fd"
     state: link
     force: yes
 
 - name: symlink the OVMF_VARS
-  file: 
-    path: "/usr/share/OVMF/OVMF_VARS.fd" 
+  file:
+    path: "/usr/share/OVMF/OVMF_VARS.fd"
     src: "/usr/share/edk2.git/ovmf-x64/OVMF_VARS-pure-efi.fd"
     state: link
     force: yes
