@@ -24,7 +24,10 @@
   when: config_storage|bool
 
 - name: configure group in for fast-vm access in sudoers
-  lineinfile: dest=/etc/sudoers.d/fast-vm-sudoers regexp='.*/usr/libexec/fast-vm-helper.sh$' line="%{{ fastvm_group }} ALL=(root) NOPASSWD{{ ':' }} /usr/libexec/fast-vm-helper.sh"
+  lineinfile:
+    dest: '/etc/sudoers.d/fast-vm-sudoers'
+    regexp: '.*/usr/libexec/fast-vm-helper.sh$'
+    line: "%{{ fastvm_group }} ALL=(root) NOPASSWD{{ ':' }} /usr/libexec/fast-vm-helper.sh"
   when: config_sudoers|bool
 
 - name: configure fast-vm.conf
