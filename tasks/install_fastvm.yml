@@ -1,13 +1,17 @@
 ---
 - name: yum install packages
+  yum:
+    name: "{{ yum_packages_fastvm }}"
+    state: 'present'
   when: ansible_distribution != 'Fedora'
-  yum: name="{{ item }}" state=present
-  with_items: "{{ yum_packages_fastvm }}"
 
 - name: dnf install packages
+  dnf:
+    name: "{{ dnf_packages_fastvm }}"
+    state: 'present'
   when: ansible_distribution == 'Fedora'
-  dnf: name="{{ item }}" state=present
-  with_items: "{{ dnf_packages_fastvm }}"
 
 - name: enable libvirtd service on boot
-  service: name=libvirtd enabled=yes
+  service:
+    name: 'libvirtd'
+    enabled: yes

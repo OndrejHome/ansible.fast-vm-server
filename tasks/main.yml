@@ -20,7 +20,12 @@
   when: config_libvirt_network|bool
 
 - name: create a thinpool LV for fast-vm storage
-  lvol: vg={{ fastvm_vg }} size={{ fastvm_lv_size }} lv={{ fastvm_lv }} opts='-T' state=present
+  lvol:
+    vg: "{{ fastvm_vg }}"
+    size: "{{ fastvm_lv_size }}"
+    lv: "{{ fastvm_lv }}"
+    opts: '-T'
+    state: 'present'
   when: config_storage|bool
 
 - name: configure group in for fast-vm access in sudoers
@@ -31,7 +36,9 @@
   when: config_sudoers|bool
 
 - name: configure fast-vm.conf
-  template: src=fast-vm.conf.j2 dest=/etc/fast-vm.conf
+  template:
+    src: 'fast-vm.conf.j2'
+    dest: '/etc/fast-vm.conf'
   when: config_fastvm_conf|bool
 
 - name: install_ovmf (CentOS/RHEL)

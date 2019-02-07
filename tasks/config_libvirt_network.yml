@@ -1,7 +1,9 @@
 ---
 ## we need libvirt to be started to do any changes to libvirt networks
 - name: ensure that libvirtd service is started
-  service: name=libvirtd state=started
+  service:
+    name: 'libvirtd'
+    state: 'started'
 
 ## virt_net commands must be separate as the virt_net cannot handle 'state'/'command'/'autostart' together
 - name: define fast-vm-nat libvirt network

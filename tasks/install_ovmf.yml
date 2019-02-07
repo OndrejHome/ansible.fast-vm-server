@@ -2,30 +2,34 @@
 # https://www.kraxel.org/repos/firmware.repo
 - name: add repository with OVMF firmware
   yum_repository:
-    name: qemu-firmware-jenkins
-    description: firmware for qemu, built by jenkins, fresh from git repos
-    baseurl: https://www.kraxel.org/repos/jenkins/
+    name: 'qemu-firmware-jenkins'
+    description: 'firmware for qemu, built by jenkins, fresh from git repos'
+    baseurl: 'https://www.kraxel.org/repos/jenkins/'
     skip_if_unavailable: yes
     enabled: yes
     gpgcheck: no
     metadata_expire: 300
 
 - name: install OVMF firmware package
-  yum: name="edk2.git-ovmf-x64" state=present
+  yum:
+    name: 'edk2.git-ovmf-x64'
+    state: 'present'
 
 - name: create directory /usr/share/OVMF/
-  file: path="/usr/share/OVMF/" state=directory
+  file:
+    path: '/usr/share/OVMF/'
+    state: 'directory'
 
 - name: symlink the OVMF_CODE
   file:
-    path: "/usr/share/OVMF/OVMF_CODE.fd"
-    src: "/usr/share/edk2.git/ovmf-x64/OVMF_CODE-pure-efi.fd"
-    state: link
+    path: '/usr/share/OVMF/OVMF_CODE.fd'
+    src: '/usr/share/edk2.git/ovmf-x64/OVMF_CODE-pure-efi.fd'
+    state: 'link'
     force: yes
 
 - name: symlink the OVMF_VARS
   file:
-    path: "/usr/share/OVMF/OVMF_VARS.fd"
-    src: "/usr/share/edk2.git/ovmf-x64/OVMF_VARS-pure-efi.fd"
-    state: link
+    path: '/usr/share/OVMF/OVMF_VARS.fd'
+    src: '/usr/share/edk2.git/ovmf-x64/OVMF_VARS-pure-efi.fd'
+    state: 'link'
     force: yes

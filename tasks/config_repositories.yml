@@ -2,11 +2,11 @@
 - name: add and enable fast-vm yum repository
   when: config_repositories|bool
   yum_repository:
-    name: ondrejhome-fast-vm
-    description: Copr repo for fast-vm owned by ondrejhome
+    name: 'ondrejhome-fast-vm'
+    description: 'Copr repo for fast-vm owned by ondrejhome'
     baseurl: "{{ baseurl }}"
     skip_if_unavailable: yes
-    gpgkey: https://copr-be.cloud.fedoraproject.org/results/ondrejhome/fast-vm/pubkey.gpg
+    gpgkey: 'https://copr-be.cloud.fedoraproject.org/results/ondrejhome/fast-vm/pubkey.gpg'
     enabled: yes
     gpgcheck: yes
     repo_gpgcheck: no

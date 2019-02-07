@@ -1,16 +1,20 @@
 ---
 - name: yum install fence_virtd packages
+  yum:
+    name: "{{ yum_packages_fence_virtd }}"
+    state: 'present'
   when: ansible_distribution != 'Fedora'
-  yum: name="{{ item }}" state=present
-  with_items: "{{ yum_packages_fence_virtd }}"
 
 - name: dnf install fence_virtd packages
+  dnf:
+    name: "{{ dnf_packages_fence_virtd }}"
+    state: 'present'
   when: ansible_distribution == 'Fedora'
-  dnf: name="{{ item }}" state=present
-  with_items: "{{ dnf_packages_fence_virtd }}"
 
 - name: create /etc/cluster directory
-  file: path="/etc/cluster" state=directory
+  file:
+    path: '/etc/cluster'
+    state: 'directory'
 
 - name: generate fence_xvm key
   command: dd if=/dev/urandom of=/etc/cluster/fence_xvm.key bs=4k count=1
@@ -19,18 +23,30 @@
     creates: /etc/cluster/fence_xvm.key
 
 - name: make fence_xvm.key readable by everyone
-  file: path="/etc/cluster/fence_xvm.key" mode=0644
+  file:
+    path: '/etc/cluster/fence_xvm.key'
+    mode: '0644'
   notify: restart fence_virtd service
 
 - name: generate /etc/fence_virt.conf configuration
-  template: src=fence_virt.conf.j2 dest=/etc/fence_virt.conf mode=0644
+  template:
+    src: 'fence_virt.conf.j2'
+    dest: '/etc/fence_virt.conf'
+    mode: '0644'
   notify: restart fence_virtd service
 
 - name: configure firewall for fence_virtd
-  firewalld: port="{{ item }}" permanent=true state=enabled immediate=true
+  firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: 'enabled'
+    immediate: true
   with_items:
-    - "1229/tcp"
-    - "1229/udp"
+    - '1229/tcp'
+    - '1229/udp'
 
 - name: start and enable fence_virtd service
-  service: name=fence_virtd state=started enabled=yes
+  service:
+    name: 'fence_virtd'
+    state: 'started'
+    enabled: yes
