@@ -1,3 +1,12 @@
 ---
 - name: install custom qemu-kvm, qemu-img and seabios-bin packages
-  command: yum downgrade --disablerepo=* --enablerepo=ondrejhome-fast-vm qemu-img qemu-kvm qemu-kvm-common seabios-bin -y
+  yum:
+    name:
+      - qemu-img
+      - qemu-kvm
+      - qemu-kvm-common
+      - seabios-bin
+    enablerepo: 'ondrejhome-fast-vm'
+    disablerepo: '*'
+    state: 'latest'
+    update_only: true
