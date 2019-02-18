@@ -15,6 +15,9 @@
   include: config_libvirt_access.yml
   when: config_libvirt_access|bool
 
+# flush handlers to reload libvirt if needed
+- meta: flush_handlers
+
 - name: config_libvirt_network
   include: config_libvirt_network.yml
   when: config_libvirt_network|bool

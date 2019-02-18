@@ -26,5 +26,3 @@
     regexp: 'auth_unix_rw = '
     line: "auth_unix_rw = \"none\""
   notify: restart libvirtd service
-
-- meta: flush_handlers
