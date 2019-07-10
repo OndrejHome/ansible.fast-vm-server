@@ -41,6 +41,7 @@
     permanent: true
     state: 'enabled'
     immediate: true
+  when: use_firewalld|bool
   with_items:
     - '1229/tcp'
     - '1229/udp'
