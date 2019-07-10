@@ -44,6 +44,7 @@
   with_items:
     - '1229/tcp'
     - '1229/udp'
+  when: use_firewalld|bool
 
 - name: start and enable fence_virtd service
   service:

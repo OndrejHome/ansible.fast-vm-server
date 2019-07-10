@@ -61,6 +61,11 @@ Role Variables
     install_custom_qemu: true
     ```
 
+  - install and configure firewalld
+    ```
+    use_firewalld: true
+    ```
+
   - group with access to fast-vm
     - **required by:** *config_libvirt_access, config_sudoers, config_fastvm_conf*
     ```

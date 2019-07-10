@@ -21,6 +21,8 @@ install_ovmf: true
 install_fence_virtd: true
 ## install custom version of qemu-kvm,qemu-img and seabios-bin to support LSI and MEGASAS emaulated drivers
 install_custom_qemu: true
+## install and configure firewalld
+use_firewalld: true
 
 ### variable that are required by some areas from above
 # all variable has list of 'required by' on which above options needs them
