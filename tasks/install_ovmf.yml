@@ -8,7 +8,7 @@
     skip_if_unavailable: yes
     enabled: yes
     gpgcheck: no
-    metadata_expire: 300
+    metadata_expire: '300'
 
 - name: install OVMF firmware package
   yum:
