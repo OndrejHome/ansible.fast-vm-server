@@ -1,27 +1,14 @@
 ---
-- name: yum install packages
-  yum:
-    name: "{{ yum_packages_fastvm }}"
+- name: install packages
+  package:
+    name: "{{ packages_fastvm }}"
     state: 'present'
-  when: ansible_distribution != 'Fedora'
 
-- name: dnf install packages
-  dnf:
-    name: "{{ dnf_packages_fastvm }}"
-    state: 'present'
-  when: ansible_distribution == 'Fedora'
-
-- name: yum install firewalld
-  yum:
+- name: install firewalld
+  package:
     name: 'firewalld'
     state: 'present'
-  when: use_firewalld|bool and ansible_distribution != 'Fedora'
-
-- name: dnf install firewalld
-  dnf:
-    name: 'firewalld'
-    state: 'present'
-  when: use_firewalld|bool and ansible_distribution == 'Fedora'
+  when: use_firewalld|bool
 
 - name: enable libvirtd service on boot
   service:

@@ -1,15 +1,8 @@
 ---
-- name: yum install fence_virtd packages
-  yum:
-    name: "{{ yum_packages_fence_virtd }}"
+- name: install fence_virtd packages
+  package:
+    name: "{{ packages_fence_virtd }}"
     state: 'present'
-  when: ansible_distribution != 'Fedora'
-
-- name: dnf install fence_virtd packages
-  dnf:
-    name: "{{ dnf_packages_fence_virtd }}"
-    state: 'present'
-  when: ansible_distribution == 'Fedora'
 
 - name: create /etc/cluster directory
   file:
