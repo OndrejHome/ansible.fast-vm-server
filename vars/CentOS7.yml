@@ -11,4 +11,3 @@ yum_packages_fence_virtd:
   - fence-virtd
   - fence-virtd-libvirt
   - fence-virtd-multicast
-  - python-firewall

@@ -11,7 +11,26 @@
     state: 'present'
   when: ansible_distribution == 'Fedora'
 
+- name: yum install firewalld
+  yum:
+    name: 'firewalld'
+    state: 'present'
+  when: use_firewalld|bool and ansible_distribution != 'Fedora'
+
+- name: dnf install firewalld
+  dnf:
+    name: 'firewalld'
+    state: 'present'
+  when: use_firewalld|bool and ansible_distribution == 'Fedora'
+
 - name: enable libvirtd service on boot
   service:
     name: 'libvirtd'
     enabled: yes
+
+- name: Enable and start firewalld service
+  service:
+    name: 'firewalld'
+    enabled: true
+    state: 'started'
+  when: use_firewalld|bool
