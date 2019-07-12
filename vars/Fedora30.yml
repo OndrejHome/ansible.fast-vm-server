@@ -5,8 +5,8 @@ dnf_packages_fastvm:
   - dnsmasq-utils
   - libguestfs-tools-c
   - bash-completion
-  - python-lxml
-  - libvirt-python
+  - python3-lxml
+  - python3-libvirt
   - libselinux-python
 dnf_packages_fence_virtd:
   - fence-virtd

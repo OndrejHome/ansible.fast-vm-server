@@ -6,7 +6,7 @@ This role configures OS for use with fast-vm and installs and configures the fas
 Requirements
 ------------
 
-This roles was tested only on CentOS/RHEL 7.5 and Fedora 27, 28, 29. On RHEL systems this role expects that system is properly registered so it can download and install packages.
+This roles was tested only on CentOS/RHEL 7.6 and Fedora 28, 29, 30. On RHEL systems this role expects that system is properly registered so it can download and install packages.
 
 Role Variables
 --------------
@@ -129,12 +129,13 @@ Install and configure all basic things needed by fast-vm - default installation:
       roles:
          - { role: OndrejHome.fast-vm-server }
 
-NOTE: Fedora 28 and 29 are supported only with python3 interpreter that requires adding `ansible_python_interpreter=/usr/bin/python3` variable in host as shown below.
+NOTE: Fedora 28 and later are supported only with python3 interpreter that requires adding `ansible_python_interpreter=/usr/bin/python3` variable in host as shown below.
 
     [servers]
-    fedora27-machine
+    centos-machine
     fedora28-machine ansible_python_interpreter=/usr/bin/python3
     fedora29-machine ansible_python_interpreter=/usr/bin/python3
+    fedora30-machine ansible_python_interpreter=/usr/bin/python3
 
 License
 -------
