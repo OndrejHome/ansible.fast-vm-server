@@ -1,5 +1,5 @@
 ---
-baseurl: 'https://copr-be.cloud.fedoraproject.org/results/ondrejhome/fast-vm/fedora-$releasever-$basearch/'
+baseurl: 'https://copr-be.cloud.fedoraproject.org/results/ondrejhome/fast-vm/epel-8-$basearch/'
 packages_fastvm:
   - fast-vm
   - dnsmasq-utils
@@ -7,8 +7,6 @@ packages_fastvm:
   - bash-completion
   - python3-lxml
   - python3-libvirt
-  - libselinux-python
-  - zstd
 packages_fence_virtd:
   - fence-virtd
   - fence-virtd-libvirt
