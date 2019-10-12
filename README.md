@@ -127,7 +127,7 @@ Install and configure all basic things needed by fast-vm - default installation:
 
     - hosts: servers
       roles:
-         - { role: OndrejHome.fast-vm-server }
+         - { role: ondrejhome.fast-vm-server }
 
 NOTE: Fedora 28 and later are supported only with python3 interpreter that requires adding `ansible_python_interpreter=/usr/bin/python3` variable in host as shown below.
 
