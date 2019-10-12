@@ -4,22 +4,22 @@
   include_vars: "{{ ansible_distribution }}{{ ansible_distribution_major_version }}.yml"
 
 - name: config_repositories
-  include: config_repositories.yml
+  include_tasks: config_repositories.yml
   when: config_repositories|bool
 
 - name: install_fastvm
-  include: install_fastvm.yml
+  include_tasks: install_fastvm.yml
   when: install_fastvm|bool
 
 - name: config_libvirt_access
-  include: config_libvirt_access.yml
+  include_tasks: config_libvirt_access.yml
   when: config_libvirt_access|bool
 
 # flush handlers to reload libvirt if needed
 - meta: flush_handlers
 
 - name: config_libvirt_network
-  include: config_libvirt_network.yml
+  include_tasks: config_libvirt_network.yml
   when: config_libvirt_network|bool
 
 - name: create a thinpool LV for fast-vm storage
@@ -45,17 +45,17 @@
   when: config_fastvm_conf|bool
 
 - name: install_ovmf (CentOS/RHEL)
-  include: install_ovmf.yml
+  include_tasks: install_ovmf.yml
   when: install_ovmf|bool and ansible_distribution != 'Fedora'
 
 - name: install_ovmf (Fedora)
-  include: install_ovmf_fedora.yml
+  include_tasks: install_ovmf_fedora.yml
   when: install_ovmf|bool and ansible_distribution == 'Fedora'
 
 - name: install_fence_virtd
-  include: install_fence_virtd.yml
+  include_tasks: install_fence_virtd.yml
   when: install_fence_virtd|bool
 
 - name: install_custom_qemu
-  include: install_custom_qemu.yml
+  include_tasks: install_custom_qemu.yml
   when: install_custom_qemu|bool and ansible_distribution != 'Fedora'
