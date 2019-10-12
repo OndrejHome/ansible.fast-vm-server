@@ -6,7 +6,7 @@ This role configures OS for use with fast-vm and installs and configures the fas
 Requirements
 ------------
 
-This roles was tested only on CentOS/RHEL 7.6 and Fedora 28, 29, 30. On RHEL systems this role expects that system is properly registered so it can download and install packages.
+This roles was tested only on CentOS/RHEL 7.6 and Fedora 29, 30. On RHEL systems this role expects that system is properly registered so it can download and install packages.
 
 Role Variables
 --------------
@@ -133,7 +133,6 @@ NOTE: Fedora 28 and later are supported only with python3 interpreter that requi
 
     [servers]
     centos-machine
-    fedora28-machine ansible_python_interpreter=/usr/bin/python3
     fedora29-machine ansible_python_interpreter=/usr/bin/python3
     fedora30-machine ansible_python_interpreter=/usr/bin/python3
 
