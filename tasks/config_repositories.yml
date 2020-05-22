@@ -11,8 +11,8 @@
     gpgcheck: yes
     repo_gpgcheck: no
 
-- name: enable optional RPMs repository on RHEL systems
-  command: subscription-manager repos --enable=rhel-7-server-optional-rpms
+- name: enable 'optional' and 'extras' RPMs repository on RHEL systems
+  command: subscription-manager repos --enable=rhel-7-server-optional-rpms --enable=rhel-7-server-extras-rpms
   when: config_repositories|bool and ansible_distribution == 'RedHat' and ansible_distribution_major_version == '7'
   ignore_errors: True
   ## we ignore if this fails because we might have access to needed packages via other repository

@@ -7,6 +7,8 @@ packages_fastvm:
   - bash-completion
   - python-lxml
   - libvirt-python
+  - zstd
+  - pv
 packages_fence_virtd:
   - fence-virtd
   - fence-virtd-libvirt
