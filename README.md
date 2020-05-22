@@ -6,10 +6,10 @@ This role configures OS for use with fast-vm and installs and configures the fas
 Requirements
 ------------
 
-This roles was tested only on CentOS/RHEL 7.7, 8.0 and Fedora 29, 30. On RHEL systems this role expects that system is properly registered so it can download and install packages.
+This roles was tested only on CentOS/RHEL 7.8, 8.1 and Fedora 30, 31 32. On RHEL systems this role expects that system is properly registered so it can download and install packages.
 
-Note: On freshly installed Fedora 30 you may see the failure installing packages. In such case try to update all packages first and then use this role again.
-
+Note: On freshly installed Fedora 30 you may see the failure installing packages. In such case try to update all packages first and then use this role again (Fedora 31 and 32 have no such issue at the moment)
+.
 Role Variables
 --------------
 
@@ -122,6 +122,18 @@ Role Variables
     fence_virtd_address: '225.0.0.12'
     ```
 
+  - Libguest appliance import or generation
+    - **required by:** *config_fastvm_conf*
+    ```
+    fastvm_appliance: 'import'
+    ```
+
+  - System-wide default password for 'keydist' operation.
+    - **required by:** *config_fastvm_conf*
+    ```
+    fastvm_keydist_password: 'testtest'
+    ```
+
 Example Playbook
 ----------------
 
@@ -136,8 +148,9 @@ NOTE: Fedora 28 and later are supported only with python3 interpreter that requi
     [servers]
     el7-machine
     el8-machine ansible_python_interpreter=/usr/libexec/platform-python
-    fedora29-machine ansible_python_interpreter=/usr/bin/python3
     fedora30-machine ansible_python_interpreter=/usr/bin/python3
+    fedora31-machine ansible_python_interpreter=/usr/bin/python3
+    fedora32-machine ansible_python_interpreter=/usr/bin/python3
 
 License
 -------
