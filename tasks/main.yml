@@ -44,13 +44,21 @@
     dest: '/etc/fast-vm.conf'
   when: config_fastvm_conf|bool
 
+- name: create directory for libguestfs appliance
+  file:
+    path: '/var/lib/fast-vm/'
+    state: 'directory'
+
+- name: download and extract libguestfs appliance
+  unarchive:
+    src: 'http://ftp.linux.cz/pub/linux/people/ondrej_famera/fastvm-images/appliance-1.42.0.tar.xz'
+    dest: '/var/lib/fast-vm'
+    remote_src: yes
+  when: fastvm_appliance == 'import'
+
 - name: install_ovmf (CentOS/RHEL)
   include_tasks: install_ovmf.yml
   when: install_ovmf|bool and ( ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat' )
-
-- name: install_ovmf (Fedora)
-  include_tasks: install_ovmf_fedora.yml
-  when: install_ovmf|bool and ansible_distribution == 'Fedora'
 
 - name: install_fence_virtd
   include_tasks: install_fence_virtd.yml

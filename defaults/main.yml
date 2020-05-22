@@ -62,3 +62,9 @@ fastvm_owner_only_delete: 'yes'
 ## Multicast address of fence_virt daemon
 # required by: install_fence_virt
 fence_virtd_address: '225.0.0.12'
+
+## (fast-vm-1.7) import or generate libguestfs appliance
+fastvm_appliance: 'import'
+
+## (fast-vm-1.7) default system-wide password for 'keydist' operation
+fastvm_keydist_password: 'testtest'
