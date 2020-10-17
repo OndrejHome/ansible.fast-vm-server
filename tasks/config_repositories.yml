@@ -10,6 +10,32 @@
     enabled: yes
     gpgcheck: yes
     repo_gpgcheck: no
+- name: add fast-vm-epel-deps yum repository for EL7/EL8 systems
+  yum_repository:
+    name: 'fast-vm-epel-deps'
+    description: 'fast-vm dependencies from Extra Packages for Enterprise Linux $releasever - $basearch'
+    metalink: 'https://mirrors.fedoraproject.org/metalink?repo=epel-$releasever&arch=$basearch&infra=$infra&content=$contentdir'
+    gpgkey: 'https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-$releasever'
+    enabled: yes
+    gpgcheck: yes
+    includepkgs: 'zstd sshpass pv'
+  when: config_repositories|bool and
+        ( (ansible_distribution == 'RedHat' and ansible_distribution_major_version == '8') or
+        (ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7') or
+        (ansible_distribution == 'CentOS' and ansible_distribution_major_version == '8') )
+- name: add fast-vm-epel-deps yum repository for EL7/EL8 systems
+  yum_repository:
+    name: 'fast-vm-epel-deps'
+    description: 'fast-vm dependencies from Extra Packages for Enterprise Linux 7 - $basearch'
+    metalink: 'https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=$basearch&infra=$infra&content=$contentdir'
+    gpgkey: 'https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7'
+    enabled: yes
+    gpgcheck: yes
+    includepkgs: 'zstd sshpass pv'
+  when:
+    - config_repositories|bool
+    - ansible_distribution == 'RedHat'
+    - ansible_distribution_major_version == '7'
 
 - name: enable 'optional' and 'extras' RPMs repository on RHEL systems
   command: subscription-manager repos --enable=rhel-7-server-optional-rpms --enable=rhel-7-server-extras-rpms
