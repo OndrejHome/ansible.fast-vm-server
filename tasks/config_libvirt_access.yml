@@ -4,6 +4,7 @@
     dest: '/etc/libvirt/libvirtd.conf'
     regexp: 'unix_sock_group = '
     line: "unix_sock_group = \"{{ fastvm_group }}\""
+    mode: '0644'
   notify: restart libvirtd service
 
 - name: libvirt unix_sock_rw_perms
@@ -11,6 +12,7 @@
     dest: '/etc/libvirt/libvirtd.conf'
     regexp: 'unix_sock_rw_perms = '
     line: "unix_sock_rw_perms = \"0770\""
+    mode: '0644'
   notify: restart libvirtd service
 
 - name: libvirt auth_unix_ro
@@ -18,6 +20,7 @@
     dest: '/etc/libvirt/libvirtd.conf'
     regexp: 'auth_unix_ro = '
     line: "auth_unix_ro = \"none\""
+    mode: '0644'
   notify: restart libvirtd service
 
 - name: libvirt auth_unix_rw
@@ -25,4 +28,5 @@
     dest: '/etc/libvirt/libvirtd.conf'
     regexp: 'auth_unix_rw = '
     line: "auth_unix_rw = \"none\""
+    mode: '0644'
   notify: restart libvirtd service

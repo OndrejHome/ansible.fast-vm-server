@@ -36,24 +36,28 @@
     dest: '/etc/sudoers.d/fast-vm-sudoers'
     regexp: '.*/usr/libexec/fast-vm-helper.sh$'
     line: "%{{ fastvm_group }} ALL=(root) NOPASSWD{{ ':' }} /usr/libexec/fast-vm-helper.sh"
+    mode: '0440'
   when: config_sudoers|bool
 
 - name: configure fast-vm.conf
   template:
     src: 'fast-vm.conf.j2'
     dest: '/etc/fast-vm.conf'
+    mode: '0644'
   when: config_fastvm_conf|bool
 
 - name: create directory for libguestfs appliance
   file:
     path: '/var/lib/fast-vm/'
     state: 'directory'
+    mode: '0755'
 
 - name: download and extract libguestfs appliance
   unarchive:
     src: 'http://ftp.linux.cz/pub/linux/people/ondrej_famera/fastvm-images/appliance-1.42.0.tar.xz'
     dest: '/var/lib/fast-vm'
     remote_src: yes
+    mode: '0755'
   when: fastvm_appliance == 'import'
 
 - name: install_ovmf (CentOS/RHEL)

@@ -19,6 +19,7 @@
   file:
     path: '/usr/share/OVMF/'
     state: 'directory'
+    mode: '0755'
 
 - name: symlink the OVMF_CODE
   file:
@@ -26,6 +27,7 @@
     src: '/usr/share/edk2.git/ovmf-x64/OVMF_CODE-pure-efi.fd'
     state: 'link'
     force: yes
+    mode: '0644'
 
 - name: symlink the OVMF_VARS
   file:
@@ -33,3 +35,4 @@
     src: '/usr/share/edk2.git/ovmf-x64/OVMF_VARS-pure-efi.fd'
     state: 'link'
     force: yes
+    mode: '0644'
