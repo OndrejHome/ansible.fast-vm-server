@@ -4,7 +4,7 @@ galaxy_info:
   description: role for installing and configuring fast-vm with additional features
   company: Ondrej Faměra
   license: GPLv3
-  min_ansible_version: 2.5
+  min_ansible_version: 2.8
   platforms:
   - name: EL
     versions:
@@ -12,7 +12,6 @@ galaxy_info:
     - 8
   - name: Fedora
     versions:
-    - 30
     - 31
     - 32
   galaxy_tags:
