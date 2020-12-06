@@ -6,7 +6,7 @@ This role configures OS for use with fast-vm and installs and configures the fas
 Requirements
 ------------
 
-This roles was tested only on CentOS/RHEL 7.8, 8.1 and Fedora 31 32. On RHEL systems this role expects that system is properly registered so it can download and install packages.
+This roles was tested only on CentOS/RHEL 7.8, 8.1 and Fedora 31, 32, 33. On RHEL systems this role expects that system is properly registered so it can download and install packages.
 
 Ansible 2.8.x or newer.
 
@@ -150,6 +150,7 @@ Example hosts inventory file.
     el8-machine
     fedora31-machine
     fedora32-machine
+    fedora33-machine
 
 License
 -------

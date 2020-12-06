@@ -7,7 +7,7 @@ packages_fastvm:
   - bash-completion
   - python3-lxml
   - python3-libvirt
-  - libselinux-python
+  - python3-libselinux
   - zstd
 packages_fence_virtd:
   - fence-virtd
