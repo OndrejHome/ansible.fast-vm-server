@@ -6,7 +6,21 @@ This role configures OS for use with fast-vm and installs and configures the fas
 Requirements
 ------------
 
-This roles was tested only on CentOS/RHEL 7.8, 8.1 and Fedora 31, 32, 33. On RHEL systems this role expects that system is properly registered so it can download and install packages.
+This roles was tested on following systems and versions:
+- AlmaLinux 8.5
+- CentOS 7.9
+- CentOS 8.5
+- RHEL 7.8
+- RHEL 8.1
+- Fedora 31, 32, 33, 34, 35
+- Debian 10.11 (not all features are supported)
+- Debian 11.2 (not all features are supported)
+- Ubuntu 18.04 (not all features are supported)
+- Ubuntu 20.04 (not all features are supported)
+
+On RHEL systems this role expects that system is properly registered so it can download and install packages.
+
+(not all features are supported) - OVMF, fence_virtd and firewalld configuration was not tested and is disabled by default on some platforms.
 
 Ansible 2.8.x or newer.
 

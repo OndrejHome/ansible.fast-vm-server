@@ -15,6 +15,16 @@ galaxy_info:
     - 31
     - 32
     - 33
+    - 34
+    - 35
+  - name: Debian
+    versions:
+    - 'buster'
+    - 'bullseye'
+  - name: Ubuntu
+    versions:
+    - 'bionic'
+    - 'focal'
   galaxy_tags:
   - system
 dependencies: []

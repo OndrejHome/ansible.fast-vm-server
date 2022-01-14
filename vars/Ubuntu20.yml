@@ -1,0 +1,10 @@
+---
+packages_fastvm:
+- python3-libvirt
+- python3-lxml
+packages_fastvm_deb: 'https://github.com/OndrejHome/fast-vm/releases/download/1.7/fast-vm_1.7_all-ubuntu20.deb'
+
+# defaults for this platform
+install_ovmf: False
+install_fence_virtd: False
+use_firewalld: False

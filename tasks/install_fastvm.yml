@@ -4,6 +4,12 @@
     name: "{{ packages_fastvm }}"
     state: 'present'
 
+- name: install fast-vm DEB package directly
+  apt:
+    deb: "{{ packages_fastvm_deb }}"
+    state: 'present'
+  when: ansible_distribution in ['Debian', 'Ubuntu' ]
+
 - name: install firewalld
   package:
     name: 'firewalld'

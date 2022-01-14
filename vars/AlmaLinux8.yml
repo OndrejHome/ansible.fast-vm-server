@@ -1,0 +1,15 @@
+---
+baseurl: 'https://copr-be.cloud.fedoraproject.org/results/ondrejhome/fast-vm/epel-8-$basearch/'
+packages_fastvm:
+  - fast-vm
+  - dnsmasq-utils
+  - libguestfs-tools-c
+  - bash-completion
+  - python3-lxml
+  - python3-libvirt
+  - pv
+  - sshpass
+packages_fence_virtd:
+  - fence-virtd
+  - fence-virtd-libvirt
+  - fence-virtd-multicast
