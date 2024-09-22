@@ -12,7 +12,7 @@
     enabled: yes
     gpgcheck: yes
     repo_gpgcheck: no
-- name: add fast-vm-epel-deps yum repository for EL7/EL8 systems
+- name: add fast-vm-epel-deps yum repository for EL7/EL8/EL9 systems
   yum_repository:
     name: 'fast-vm-epel-deps'
     description: 'fast-vm dependencies from Extra Packages for Enterprise Linux $releasever - $basearch'
@@ -22,11 +22,10 @@
     gpgcheck: yes
     includepkgs: 'zstd sshpass pv'
   when: config_repositories|bool and
-        ( (ansible_distribution == 'RedHat' and ansible_distribution_major_version == '8') or
-        (ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7') or
-        (ansible_distribution == 'CentOS' and ansible_distribution_major_version == '8') or
-        (ansible_distribution == 'AlmaLinux' and ansible_distribution_major_version == '8') )
-- name: add fast-vm-epel-deps yum repository for EL7/EL8 systems
+        ( (ansible_distribution == 'RedHat' and ansible_distribution_major_version in [ '8', '9' ]) or
+        (ansible_distribution == 'CentOS' and ansible_distribution_major_version in [ '7', '8' ]) or
+        (ansible_distribution == 'AlmaLinux' and ansible_distribution_major_version in [ '8', '9' ]) )
+- name: add fast-vm-epel-deps yum repository for EL7 systems
   yum_repository:
     name: 'fast-vm-epel-deps'
     description: 'fast-vm dependencies from Extra Packages for Enterprise Linux 7 - $basearch'

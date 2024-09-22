@@ -54,7 +54,7 @@
 
 - name: download and extract libguestfs appliance
   unarchive:
-    src: 'http://ftp.linux.cz/pub/linux/people/ondrej_famera/fastvm-images/appliance-1.42.0.tar.xz'
+    src: 'https://kr.famera.cz/fastvm-images/appliance-1.50.1-x86_64.tar.xz'
     dest: '/var/lib/fast-vm'
     remote_src: yes
     mode: '0755'
@@ -62,7 +62,7 @@
 
 - name: install_ovmf (CentOS/RHEL)
   include_tasks: install_ovmf.yml
-  when: install_ovmf|bool and ( ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat' )
+  when: install_ovmf|bool and ( ansible_distribution in [ 'CentOS', 'RedHat', 'AlmaLinux' ] )
 
 - name: install_fence_virtd
   include_tasks: install_fence_virtd.yml
