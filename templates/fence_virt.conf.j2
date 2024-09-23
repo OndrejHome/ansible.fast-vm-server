@@ -5,7 +5,7 @@ fence_virtd {
 
 listeners {
         multicast {
-                key_file = "/etc/cluster/fence_xvm.key";
+                key_file = "/etc/cluster/fence_xvm-protected.key";
                 address = "{{ fence_virtd_address }}";
                 interface = "{{ fastvm_net_name }}";
         }

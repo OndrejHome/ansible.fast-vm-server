@@ -16,6 +16,14 @@
   args:
     creates: /etc/cluster/fence_xvm.key
 
+# https://github.com/ClusterLabs/fence-agents/pull/513
+- name: copy fence_xvm.key into fence_xvm-protected.key file with stricter permissions
+  copy:
+    remote_src: true
+    src: /etc/cluster/fence_xvm.key
+    dest: /etc/cluster/fence_xvm-protected.key
+    mode: '0600'
+
 - name: make fence_xvm.key readable by everyone
   file:
     path: '/etc/cluster/fence_xvm.key'
@@ -26,7 +34,7 @@
   template:
     src: 'fence_virt.conf.j2'
     dest: '/etc/fence_virt.conf'
-    mode: '0644'
+    mode: '0600'
   notify: restart fence_virtd service
 
 - name: configure firewall for fence_virtd
