@@ -1,46 +1,66 @@
 ---
-- name: add and enable fast-vm yum repository
+- name: configure unified fast-vm yum repository (Fedora)
   when:
     - config_repositories|bool
-    - ansible_distribution in ['Fedora', 'RedHat', 'CentOS', 'AlmaLinux' ]
-  yum_repository:
-    name: 'ondrejhome-fast-vm'
-    description: 'Copr repo for fast-vm owned by ondrejhome'
-    baseurl: "{{ baseurl }}"
-    skip_if_unavailable: yes
-    gpgkey: 'https://copr-be.cloud.fedoraproject.org/results/ondrejhome/fast-vm/pubkey.gpg'
-    enabled: yes
-    gpgcheck: yes
-    repo_gpgcheck: no
-- name: add fast-vm-epel-deps yum repository for EL7/EL8/EL9 systems
-  yum_repository:
-    name: 'fast-vm-epel-deps'
-    description: 'fast-vm dependencies from Extra Packages for Enterprise Linux $releasever - $basearch'
-    metalink: 'https://mirrors.fedoraproject.org/metalink?repo=epel-$releasever&arch=$basearch&infra=$infra&content=$contentdir'
-    gpgkey: 'https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-$releasever'
-    enabled: yes
-    gpgcheck: yes
-    includepkgs: 'zstd sshpass pv'
-  when: config_repositories|bool and
-        ( (ansible_distribution == 'RedHat' and ansible_distribution_major_version in [ '8', '9' ]) or
-        (ansible_distribution == 'CentOS' and ansible_distribution_major_version in [ '7', '8' ]) or
-        (ansible_distribution == 'AlmaLinux' and ansible_distribution_major_version in [ '8', '9' ]) )
-- name: add fast-vm-epel-deps yum repository for EL7 systems
-  yum_repository:
-    name: 'fast-vm-epel-deps'
-    description: 'fast-vm dependencies from Extra Packages for Enterprise Linux 7 - $basearch'
-    metalink: 'https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=$basearch&infra=$infra&content=$contentdir'
-    gpgkey: 'https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7'
-    enabled: yes
-    gpgcheck: yes
-    includepkgs: 'zstd sshpass pv'
-  when:
-    - config_repositories|bool
-    - ansible_distribution == 'RedHat'
-    - ansible_distribution_major_version == '7'
+    - ansible_distribution == 'Fedora'
+  copy:
+     dest: '/etc/yum.repos.d/fast-vm.repo'
+     content: |
+         [fast-vm]
+         name=fast-vm
+         baseurl=https://www.famera.cz/fast-vm-repo/unified-rpm-fedora/
+         enabled=1
+         metadata_expire=7d
+         repo_gpgcheck=1
+         type=rpm
+         gpgcheck=1
+         gpgkey=https://www.famera.cz/fast-vm-repo/fast-vm-repo-2026-2031-eddsa.gpg.txt
 
-- name: enable 'optional' and 'extras' RPMs repository on RHEL systems
-  command: subscription-manager repos --enable=rhel-7-server-optional-rpms --enable=rhel-7-server-extras-rpms
-  when: config_repositories|bool and ansible_distribution == 'RedHat' and ansible_distribution_major_version == '7'
-  ignore_errors: True
-  ## we ignore if this fails because we might have access to needed packages via other repository
+- name: configure unified fast-vm yum repository (EL)
+  when:
+    - config_repositories|bool
+    - ansible_distribution in ['RedHat', 'CentOS', 'AlmaLinux']
+  copy:
+     dest: '/etc/yum.repos.d/fast-vm.repo'
+     content: |
+         [fast-vm]
+         name=fast-vm
+         baseurl=https://www.famera.cz/fast-vm-repo/unified-rpm-el/
+         enabled=1
+         metadata_expire=7d
+         repo_gpgcheck=1
+         type=rpm
+         gpgcheck=1
+         gpgkey=https://www.famera.cz/fast-vm-repo/fast-vm-repo-2026-2031-rsa.gpg.txt
+
+- name: configure fast-vm-epel-deps yum repository (EL)
+  when:
+    - config_repositories|bool
+    - ansible_distribution in ['RedHat', 'CentOS', 'AlmaLinux']
+  copy:
+    dest: '/etc/yum.repos.d/epel-deps.repo'
+    content: |
+        [fast-vm-epel-deps]
+        name=fast-vm dependencies from Extra Packages for Enterprise Linux $releasever - $basearch
+        metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-$releasever&arch=$basearch&infra=$infra&content=$contentdir
+        enabled=1
+        gpgcheck=1
+        gpgkey=https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-$releasever
+        includepkgs=
+         pv
+
+- name: Debian/Ubuntu repository configuration
+  when:
+    - config_repositories|bool
+    - ansible_distribution in ['Debian', 'Ubuntu']
+  block:
+    - name: configure unified fast-vm apt repository (Debian/Ubuntu)
+      copy:
+        dest: '/etc/apt/sources.list.d/fast-vm.list'
+        content: |
+            deb [signed-by=/etc/apt/keyrings/fast-vm-repo-2026-2031.gpg] https://www.famera.cz/fast-vm-repo unified-deb/
+
+    - name: get gpg key for apt repo (dearmored) FIXME
+      get_url:
+        url: https://www.famera.cz/fast-vm-repo/fast-vm-repo-2026-2031-eddsa.gpg
+        dest: /etc/apt/keyrings/fast-vm-repo-2026-2031.gpg

@@ -8,3 +8,6 @@ packages_fastvm_deb: 'https://github.com/OndrejHome/fast-vm/releases/download/1.
 install_ovmf: False
 install_fence_virtd: False
 use_firewalld: False
+packages_fastvm_extra:
+  - python3-lxml
+  - python3-libvirt

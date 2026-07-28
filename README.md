@@ -7,22 +7,17 @@ Requirements
 ------------
 
 This roles was tested on following systems and versions:
-- AlmaLinux 8.5
-- CentOS 7.9
-- CentOS 8.5
-- RHEL 7.8
-- RHEL 8.1
-- Fedora 31, 32, 33, 34, 35
-- Debian 10.11 (not all features are supported)
-- Debian 11.2 (not all features are supported)
-- Ubuntu 18.04 (not all features are supported)
-- Ubuntu 20.04 (not all features are supported)
+- AlmaLinux 8.10, 9.8, 10.2
+- RHEL 8.10, 9.8, 10.2
+- Fedora 42, 43, 44
+- Debian 12.15, 13.6 (not all features are supported)
+- Ubuntu 22.04.5, 24.04.3 (not all features are supported)
 
 On RHEL systems this role expects that system is properly registered so it can download and install packages.
 
 (not all features are supported) - OVMF, fence_virtd and firewalld configuration was not tested and is disabled by default on some platforms.
 
-Ansible 2.8.x or newer.
+Tested with Ansible 2.16.14.
 
 Role Variables
 --------------

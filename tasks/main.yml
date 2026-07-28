@@ -52,22 +52,26 @@
     state: 'directory'
     mode: '0755'
 
-- name: download and extract libguestfs appliance
+- name: download libguestfs appliance into /tmp
+  get_url:
+    url: 'https://kr.famera.cz/fastvm-images/appliance-1.57.6-x86_64.tar.xz'
+    checksum: 'sha512:https://kr.famera.cz/fastvm-images/appliance-1.57.6-x86_64.tar.xz.sha512checksum.txt'
+    dest: '/tmp/appliance-1.57.6-x86_64.tar.xz'
+
+- name: extract libguestfs appliance
   unarchive:
-    src: 'https://kr.famera.cz/fastvm-images/appliance-1.50.1-x86_64.tar.xz'
+    src: '/tmp/appliance-1.57.6-x86_64.tar.xz'
     dest: '/var/lib/fast-vm'
     remote_src: yes
     mode: '0755'
+  args:
+    creates: '/var/lib/fast-vm/appliance/kernel'
   when: fastvm_appliance == 'import'
 
-- name: install_ovmf (CentOS/RHEL)
+- name: install_ovmf-symlink
   include_tasks: install_ovmf.yml
-  when: install_ovmf|bool and ( ansible_distribution in [ 'CentOS', 'RedHat', 'AlmaLinux' ] )
+  when: install_ovmf|bool
 
 - name: install_fence_virtd
   include_tasks: install_fence_virtd.yml
   when: install_fence_virtd|bool
-
-- name: install_custom_qemu
-  include_tasks: install_custom_qemu.yml
-  when: install_custom_qemu|bool and ( ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat' )

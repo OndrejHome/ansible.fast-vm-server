@@ -1,16 +1,37 @@
 ---
-- name: install packages
-  package:
-    name: "{{ packages_fastvm }}"
-    state: 'present'
+- name: Workaround for Fedora systems python3-libdnf5 package
+  # https://github.com/ansible/ansible/issues/84206
+  when:
+    - ansible_distribution == 'Fedora'
+    - ansible_distribution_major_version in ['41','42','43','44']
+  block:
+    - name: (fedora-workaround) Fetch list of installed RPMs
+      command: rpm -qa
+      register: rpm_qa
+      changed_when: false
+      check_mode: false
 
-- name: install fast-vm DEB package directly
+    - name: (fedora-workaround) Install python3-libdnf5 package if missing
+      command: dnf install -y python3-libdnf5
+      when: rpm_qa.stdout_lines | select('search', '^python3-libdnf5-[0-9]') | length == 0
+
+- name: (RPM) Install RPM fast-vm
+  dnf:
+    name: fast-vm
+  when: ansible_distribution in [ 'Fedora', 'AlmaLinux', 'RedHat', "CentOS" ]
+
+- name: (DEB) Install DEB fast-vm
   apt:
-    deb: "{{ packages_fastvm_deb }}"
-    state: 'present'
-  when: ansible_distribution in ['Debian', 'Ubuntu' ]
+    cache_valid_time: 3600
+    name: fast-vm
+  when: ansible_distribution in [ 'Debian', 'Ubuntu' ]
 
-- name: install firewalld
+- name: Install extra packages (needed by ansible playbook)
+  package:
+    name: "{{ packages_fastvm_extra }}"
+    state: 'present'
+
+- name: Install firewalld
   package:
     name: 'firewalld'
     state: 'present'

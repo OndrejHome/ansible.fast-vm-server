@@ -1,38 +1,31 @@
 ---
-# https://www.kraxel.org/repos/firmware.repo
-- name: add repository with OVMF firmware
-  yum_repository:
-    name: 'qemu-firmware-jenkins'
-    description: 'firmware for qemu, built by jenkins, fresh from git repos'
-    baseurl: 'https://www.kraxel.org/repos/jenkins/'
-    skip_if_unavailable: yes
-    enabled: yes
-    gpgcheck: no
-    metadata_expire: '300'
+- name: install ovmf-symlink on EL systems
+  dnf:
+    name: ovmf-symlink
+  when: ansible_distribution in [ 'AlmaLinux', 'RedHat' ]
 
-- name: install OVMF firmware package
-  yum:
-    name: 'edk2.git-ovmf-x64'
-    state: 'present'
+- name: install DEB ovmf-symlink
+  apt:
+    cache_valid_time: 3600
+    name: ovmf-symlink
+  when: ansible_distribution+ansible_distribution_major_version in [ 'Debian13', 'Ubuntu24' ]
 
-- name: create directory /usr/share/OVMF/
-  file:
-    path: '/usr/share/OVMF/'
-    state: 'directory'
-    mode: '0755'
+- name: get details about present OVMF files
+  ansible.builtin.stat:
+    path: "{{ item }}"
+    get_attributes: false
+    get_checksum: false
+  register: ovmf_files
+  changed_when: false
+  check_mode: false
+  loop:
+    - '/usr/share/OVMF/OVMF_CODE.fd'
+    - '/usr/share/OVMF/OVMF_VARS.fd'
 
-- name: symlink the OVMF_CODE
-  file:
-    path: '/usr/share/OVMF/OVMF_CODE.fd'
-    src: '/usr/share/edk2.git/ovmf-x64/OVMF_CODE-pure-efi.fd'
-    state: 'link'
-    force: yes
-    mode: '0644'
-
-- name: symlink the OVMF_VARS
-  file:
-    path: '/usr/share/OVMF/OVMF_VARS.fd'
-    src: '/usr/share/edk2.git/ovmf-x64/OVMF_VARS-pure-efi.fd'
-    state: 'link'
-    force: yes
-    mode: '0644'
+- name: check if OVMF file exists
+  fail:
+    msg: "File {{ item }} doesn't exists"
+  when: not ( ovmf_files['results'] | selectattr('item','eq',item) | first )['stat']['exists'] | bool
+  loop:
+    - '/usr/share/OVMF/OVMF_CODE.fd'
+    - '/usr/share/OVMF/OVMF_VARS.fd'

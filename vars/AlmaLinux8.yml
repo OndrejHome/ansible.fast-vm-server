@@ -13,3 +13,6 @@ packages_fence_virtd:
   - fence-virtd
   - fence-virtd-libvirt
   - fence-virtd-multicast
+packages_fastvm_extra:
+  - python3-lxml
+  - python3-libvirt
