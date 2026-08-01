@@ -60,7 +60,11 @@
         content: |
             deb [signed-by=/etc/apt/keyrings/fast-vm-repo-2026-2031.gpg] https://www.famera.cz/fast-vm-repo unified-deb/
 
-    - name: get gpg key for apt repo (dearmored) FIXME
+    - name: get gpg key for apt repo (dearmored)
       get_url:
         url: https://www.famera.cz/fast-vm-repo/fast-vm-repo-2026-2031-eddsa.gpg
         dest: /etc/apt/keyrings/fast-vm-repo-2026-2031.gpg
+
+    - name: refresh apt cache
+      ansible.builtin.apt:
+        update_cache: yes

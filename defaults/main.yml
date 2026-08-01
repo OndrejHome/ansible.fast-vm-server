@@ -68,3 +68,10 @@ fastvm_appliance: 'import'
 
 ## (fast-vm-1.7) default system-wide password for 'keydist' operation
 fastvm_keydist_password: 'testtest'
+
+## URL from where to download appliance
+# Note: it is assumed that next to appliance is also checksum file for it
+fastvm_appliance_url: 'https://kr.famera.cz/fastvm-images/appliance-1.57.6-x86_64.tar.xz'
+
+## Force overwriting existing appliance (for example when trying to upgrade it)
+fastvm_appliance_force_import: false

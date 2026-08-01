@@ -2,5 +2,5 @@
 packages_fastvm_extra:
   - python3-lxml
   - python3-libvirt
-install_fence_virtd: False
-use_firewalld: False
+packages_fence_virtd:
+  - fence-virtd

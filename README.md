@@ -1,7 +1,7 @@
 fast-vm-server
 ==============
 
-This role configures OS for use with fast-vm and installs and configures the fast-vm on it.
+This role configures OS for use with fast-vm, installs it, configures it and optionally install and configure additional services relevant to fast-vm.
 
 Requirements
 ------------
@@ -13,11 +13,9 @@ This roles was tested on following systems and versions:
 - Debian 12.15, 13.6 (not all features are supported)
 - Ubuntu 22.04.5, 24.04.3 (not all features are supported)
 
+Tested with **Ansible 2.16.14**.
+
 On RHEL systems this role expects that system is properly registered so it can download and install packages.
-
-(not all features are supported) - OVMF, fence_virtd and firewalld configuration was not tested and is disabled by default on some platforms.
-
-Tested with Ansible 2.16.14.
 
 Role Variables
 --------------
@@ -27,7 +25,7 @@ Role Variables
     config_repositories: true
     ```
 
-  - install packages needed by fast-vm and fast-vm itself
+  - install fast-vm and dependencies for playbook run
     ```
     install_fastvm: true
     ```
@@ -57,7 +55,7 @@ Role Variables
     config_fastvm_conf: true
     ```
 
-  - install OVMF UEFI firmware needed by UEFI fast-vm machines
+  - install ovmf-symlink package on systems where needed and check that OVMF firmware files exists in expected places
     ```
     install_ovmf: true
     ```
@@ -65,11 +63,6 @@ Role Variables
   - install and configure fence_virtd that can be used to fence the fast-vm VMs using fence_xvm
     ```
     install_fence_virtd: true
-    ```
-
-  - install custom version of qemu-kvm,qemu-img and seabios-bin to support LSI and MEGASAS emaulated drivers
-    ```
-    install_custom_qemu: true
     ```
 
   - install and configure firewalld
@@ -86,7 +79,7 @@ Role Variables
   - name of VG where fast-vm thinpool LV is located
     - **required by:** *config_storage, config_fastvm_conf*
     ```
-    fastvm_vg: c7vg
+    fastvm_vg: a10vg
     ```
 
   - name of fast-vm thinpool LV
@@ -137,29 +130,79 @@ Role Variables
     fastvm_appliance: 'import'
     ```
 
+  - URL of fast-vm libguest appliance for importing
+    NOTE: this will not overwrite existing appliance if there is a one in `/var/lib/fast-vm/appliance`
+    ```
+    fastvm_appliance_url: 'https://kr.famera.cz/fastvm-images/appliance-1.57.6-x86_64.tar.xz'
+    ```
+
+  - Force overwriting existing appliance (for example when trying to upgrade it)
+    - `false` - do not overwrite appliance if it already exists
+    - `true` - always overwrite appliance
+    ```
+    fastvm_appliance_force_import: false
+    ```
+
   - System-wide default password for 'keydist' operation.
     - **required by:** *config_fastvm_conf*
     ```
     fastvm_keydist_password: 'testtest'
     ```
 
+
 Example Playbook
 ----------------
 
-Install and configure all basic things needed by fast-vm - default installation:
+**Example A:** Install and configure defaults on first VG on the system (good for system that have only one VG)
 
     - hosts: servers
+      vars:
+        fastvm_vg: "{{ ansible_lvm.vgs | first }}"
       roles:
-         - { role: ondrejhome.fast-vm-server }
+        - { role: ondrejhome.fast-vm-server }
+
+
+**Example B:** Use existing VG `vg_test` and allocate only 20GB for fast-vm LV on it with custom name `lv_for_vms`, leave rest on defaults. Note: If `vg_test/lv_for_vms` is an existing thinpool LV then this role will just use it and it will NOT recreate it.
+
+    - hosts: servers
+      vars:
+        fastvm_vg: 'vg_test'
+        fastvm_lv_size: '20G'
+        fastvm_lv: 'lv_for_vms'
+      roles:
+        - { role: ondrejhome.fast-vm-server }
+
+** Example C:** Create VG `vg_sdb` on disk `/dev/sdb` before installing and configuring defaults for fast-vm.
+
+    - hosts: servers
+      vars:
+        fastvm_vg: "vg_sdb"
+      roles:
+        - { role: ondrejhome.fast-vm-server }
+      pre_tasks:
+        - name: create VG on /dev/sdb
+          community.general.lvg:
+            vg: "{{ fastvm_vg }}"
+            pvs: '/dev/sdb'
+
+** Example D:** Upgrade/Replace fast-vm libguest appliance only
+
+   # ansible-playbook -i hosts playbook.yaml --start-at-task='download libguestfs appliance into /tmp'
+    - hosts: servers
+      vars:
+        fastvm_appliance_url: 'https://kr.famera.cz/fastvm-images/appliance-1.57.6-x86_64.tar.xz'
+        fastvm_appliance_force_import: true
+      roles:
+        - { role: ondrejhome.fast-vm-server }
 
 Example hosts inventory file.
 
     [servers]
-    el7-machine
     el8-machine
-    fedora31-machine
-    fedora32-machine
-    fedora33-machine
+    el9-machine
+    fedora42-machine
+    fedora43-machine
+    fedora44-machine
 
 License
 -------
