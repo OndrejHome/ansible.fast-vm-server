@@ -172,6 +172,7 @@ Example Playbook
       roles:
         - { role: ondrejhome.fast-vm-server }
 
+
 ** Example C:** Create VG `vg_sdb` on disk `/dev/sdb` before installing and configuring defaults for fast-vm.
 
     - hosts: servers
@@ -185,15 +186,17 @@ Example Playbook
             vg: "{{ fastvm_vg }}"
             pvs: '/dev/sdb'
 
-** Example D:** Upgrade/Replace fast-vm libguest appliance only
 
-   # ansible-playbook -i hosts playbook.yaml --start-at-task='download libguestfs appliance into /tmp'
+** Example D:** Upgrade/Replace fast-vm libguest appliance only
+  - run with `ansible-playbook -i hosts playbook.yaml --start-at-task='download libguestfs appliance into /tmp'`
+
     - hosts: servers
       vars:
         fastvm_appliance_url: 'https://kr.famera.cz/fastvm-images/appliance-1.57.6-x86_64.tar.xz'
         fastvm_appliance_force_import: true
       roles:
         - { role: ondrejhome.fast-vm-server }
+
 
 Example hosts inventory file.
 
