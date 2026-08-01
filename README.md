@@ -173,7 +173,7 @@ Example Playbook
         - { role: ondrejhome.fast-vm-server }
 
 
-** Example C:** Create VG `vg_sdb` on disk `/dev/sdb` before installing and configuring defaults for fast-vm.
+**Example C:** Create VG `vg_sdb` on disk `/dev/sdb` before installing and configuring defaults for fast-vm.
 
     - hosts: servers
       vars:
@@ -187,8 +187,7 @@ Example Playbook
             pvs: '/dev/sdb'
 
 
-** Example D:** Upgrade/Replace fast-vm libguest appliance only
-  - run with `ansible-playbook -i hosts playbook.yaml --start-at-task='download libguestfs appliance into /tmp'`
+**Example D:** Upgrade/Replace fast-vm libguest appliance only. Run this with `ansible-playbook -i hosts playbook.yaml --start-at-task='download libguestfs appliance into /tmp'` command.
 
     - hosts: servers
       vars:
