@@ -19,5 +19,5 @@
 
 - name: enable fast-vm-nat libvirt network on boot
   virt_net:
-    autostart: yes
+    autostart: true
     name: '{{ fastvm_net_name }}'

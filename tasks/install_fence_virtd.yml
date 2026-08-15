@@ -52,4 +52,4 @@
   service:
     name: 'fence_virtd'
     state: 'started'
-    enabled: yes
+    enabled: true

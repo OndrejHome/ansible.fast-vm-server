@@ -70,7 +70,7 @@
   unarchive:
     src: '/tmp/appliance.tar.xz'
     dest: '/var/lib/fast-vm'
-    remote_src: yes
+    remote_src: true
     mode: '0755'
   args:
     creates: "{{ fastvm_appliance_force_import | bool | ternary(omit,'/var/lib/fast-vm/appliance/kernel') }}"

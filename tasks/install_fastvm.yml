@@ -40,7 +40,7 @@
 - name: enable libvirtd service on boot
   service:
     name: 'libvirtd'
-    enabled: yes
+    enabled: true
 
 - name: Enable and start firewalld service
   service:
