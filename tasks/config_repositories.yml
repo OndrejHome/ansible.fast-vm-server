@@ -3,7 +3,7 @@
   when:
     - config_repositories|bool
     - ansible_facts["distribution"] == 'Fedora'
-  copy:
+  ansible.builtin.copy:
      dest: '/etc/yum.repos.d/fast-vm.repo'
      content: |
          [fast-vm]
@@ -20,7 +20,7 @@
   when:
     - config_repositories|bool
     - ansible_facts["distribution"] in ['RedHat', 'CentOS', 'AlmaLinux']
-  copy:
+  ansible.builtin.copy:
      dest: '/etc/yum.repos.d/fast-vm.repo'
      content: |
          [fast-vm]
@@ -37,7 +37,7 @@
   when:
     - config_repositories|bool
     - ansible_facts["distribution"] in ['RedHat', 'CentOS', 'AlmaLinux']
-  copy:
+  ansible.builtin.copy:
     dest: '/etc/yum.repos.d/epel-deps.repo'
     content: |
         [fast-vm-epel-deps]
@@ -55,13 +55,13 @@
     - ansible_facts["distribution"] in ['Debian', 'Ubuntu']
   block:
     - name: configure unified fast-vm apt repository (Debian/Ubuntu)
-      copy:
+      ansible.builtin.copy:
         dest: '/etc/apt/sources.list.d/fast-vm.list'
         content: |
             deb [signed-by=/etc/apt/keyrings/fast-vm-repo-2026-2031.gpg] https://www.famera.cz/fast-vm-repo unified-deb/
 
     - name: get gpg key for apt repo (dearmored)
-      get_url:
+      ansible.builtin.get_url:
         url: https://www.famera.cz/fast-vm-repo/fast-vm-repo-2026-2031-eddsa.gpg
         dest: /etc/apt/keyrings/fast-vm-repo-2026-2031.gpg
 

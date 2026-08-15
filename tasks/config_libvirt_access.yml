@@ -1,6 +1,6 @@
 ---
 - name: libvirt unix_sock_group
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: '/etc/libvirt/libvirtd.conf'
     regexp: 'unix_sock_group = '
     line: "unix_sock_group = \"{{ fastvm_group }}\""
@@ -8,7 +8,7 @@
   notify: restart libvirtd service
 
 - name: libvirt unix_sock_rw_perms
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: '/etc/libvirt/libvirtd.conf'
     regexp: 'unix_sock_rw_perms = '
     line: "unix_sock_rw_perms = \"0770\""
@@ -16,7 +16,7 @@
   notify: restart libvirtd service
 
 - name: libvirt auth_unix_ro
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: '/etc/libvirt/libvirtd.conf'
     regexp: 'auth_unix_ro = '
     line: "auth_unix_ro = \"none\""
@@ -24,7 +24,7 @@
   notify: restart libvirtd service
 
 - name: libvirt auth_unix_rw
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: '/etc/libvirt/libvirtd.conf'
     regexp: 'auth_unix_rw = '
     line: "auth_unix_rw = \"none\""

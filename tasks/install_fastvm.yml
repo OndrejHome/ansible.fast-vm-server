@@ -6,44 +6,44 @@
     - ansible_facts["distribution_major_version"] in ['41','42','43','44']
   block:
     - name: (fedora-workaround) Fetch list of installed RPMs
-      command: rpm -qa
+      ansible.builtin.command: rpm -qa
       register: rpm_qa
       changed_when: false
       check_mode: false
 
     - name: (fedora-workaround) Install python3-libdnf5 package if missing
-      command: dnf install -y python3-libdnf5
+      ansible.builtin.command: dnf install -y python3-libdnf5
       when: rpm_qa.stdout_lines | select('search', '^python3-libdnf5-[0-9]') | length == 0
 
 - name: (RPM) Install RPM fast-vm
-  dnf:
+  ansible.builtin.dnf:
     name: fast-vm
   when: ansible_facts["distribution"] in [ 'Fedora', 'AlmaLinux', 'RedHat', "CentOS" ]
 
 - name: (DEB) Install DEB fast-vm
-  apt:
+  ansible.builtin.apt:
     cache_valid_time: 3600
     name: fast-vm
   when: ansible_facts["distribution"] in [ 'Debian', 'Ubuntu' ]
 
 - name: Install extra packages (needed by ansible playbook)
-  package:
+  ansible.builtin.package:
     name: "{{ packages_fastvm_extra }}"
     state: 'present'
 
 - name: Install firewalld
-  package:
+  ansible.builtin.package:
     name: 'firewalld'
     state: 'present'
   when: use_firewalld|bool
 
 - name: enable libvirtd service on boot
-  service:
+  ansible.builtin.service:
     name: 'libvirtd'
     enabled: true
 
 - name: Enable and start firewalld service
-  service:
+  ansible.builtin.service:
     name: 'firewalld'
     enabled: true
     state: 'started'

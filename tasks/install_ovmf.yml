@@ -1,11 +1,11 @@
 ---
 - name: install ovmf-symlink on EL systems
-  dnf:
+  ansible.builtin.dnf:
     name: ovmf-symlink
   when: ansible_facts["distribution"] in [ 'AlmaLinux', 'RedHat' ]
 
 - name: install DEB ovmf-symlink
-  apt:
+  ansible.builtin.apt:
     cache_valid_time: 3600
     name: ovmf-symlink
   when: ansible_facts["distribution"]+ansible_facts["distribution_major_version"] in [ 'Debian13', 'Ubuntu24' ]
@@ -23,7 +23,7 @@
     - '/usr/share/OVMF/OVMF_VARS.fd'
 
 - name: check if OVMF file exists
-  fail:
+  ansible.builtin.fail:
     msg: "File {{ item }} doesn't exists"
   when: not ( ovmf_files['results'] | selectattr('item','eq',item) | first )['stat']['exists'] | bool
   loop:

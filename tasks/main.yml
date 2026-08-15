@@ -1,29 +1,29 @@
 ---
 
 - name: Include distribution specific variables
-  include_vars: "{{ ansible_facts['distribution'] }}{{ ansible_facts['distribution_major_version'] }}.yml"
+  ansible.builtin.include_vars: "{{ ansible_facts['distribution'] }}{{ ansible_facts['distribution_major_version'] }}.yml"
 
 - name: config_repositories
-  include_tasks: config_repositories.yml
+  ansible.builtin.include_tasks: config_repositories.yml
   when: config_repositories|bool
 
 - name: install_fastvm
-  include_tasks: install_fastvm.yml
+  ansible.builtin.include_tasks: install_fastvm.yml
   when: install_fastvm|bool
 
 - name: config_libvirt_access
-  include_tasks: config_libvirt_access.yml
+  ansible.builtin.include_tasks: config_libvirt_access.yml
   when: config_libvirt_access|bool
 
 # flush handlers to reload libvirt if needed
-- meta: flush_handlers
+- ansible.builtin.meta: flush_handlers
 
 - name: config_libvirt_network
-  include_tasks: config_libvirt_network.yml
+  ansible.builtin.include_tasks: config_libvirt_network.yml
   when: config_libvirt_network|bool
 
 - name: create a thinpool LV for fast-vm storage
-  lvol:
+  community.general.lvol:
     vg: "{{ fastvm_vg }}"
     size: "{{ fastvm_lv_size }}"
     lv: "{{ fastvm_lv }}"
@@ -32,7 +32,7 @@
   when: config_storage|bool
 
 - name: configure group in for fast-vm access in sudoers
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: '/etc/sudoers.d/fast-vm-sudoers'
     regexp: '.*/usr/libexec/fast-vm-helper.sh$'
     line: "%{{ fastvm_group }} ALL=(root) NOPASSWD{{ ':' }} /usr/libexec/fast-vm-helper.sh"
@@ -40,34 +40,34 @@
   when: config_sudoers|bool
 
 - name: configure fast-vm.conf
-  template:
+  ansible.builtin.template:
     src: 'fast-vm.conf.j2'
     dest: '/etc/fast-vm.conf'
     mode: '0644'
   when: config_fastvm_conf|bool
 
 - name: install_ovmf-symlink
-  include_tasks: install_ovmf.yml
+  ansible.builtin.include_tasks: install_ovmf.yml
   when: install_ovmf|bool
 
 - name: install_fence_virtd
-  include_tasks: install_fence_virtd.yml
+  ansible.builtin.include_tasks: install_fence_virtd.yml
   when: install_fence_virtd|bool
 
 - name: create directory for libguestfs appliance
-  file:
+  ansible.builtin.file:
     path: '/var/lib/fast-vm/'
     state: 'directory'
     mode: '0755'
 
 - name: download libguestfs appliance into /tmp
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ fastvm_appliance_url }}"
     checksum: 'sha512:{{ fastvm_appliance_url }}.sha512checksum.txt'
     dest: '/tmp/appliance.tar.xz'
 
 - name: extract libguestfs appliance
-  unarchive:
+  ansible.builtin.unarchive:
     src: '/tmp/appliance.tar.xz'
     dest: '/var/lib/fast-vm'
     remote_src: true

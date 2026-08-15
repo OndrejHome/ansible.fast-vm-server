@@ -1,10 +1,10 @@
 ---
 - name: restart libvirtd service
-  service:
+  ansible.builtin.service:
     name: 'libvirtd'
     state: 'restarted'
 
 - name: restart fence_virtd service
-  service:
+  ansible.builtin.service:
     name: 'fence_virtd'
     state: 'restarted'

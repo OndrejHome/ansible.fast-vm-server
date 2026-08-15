@@ -1,44 +1,44 @@
 ---
 - name: install fence_virtd packages
-  package:
+  ansible.builtin.package:
     name: "{{ packages_fence_virtd }}"
     state: 'present'
 
 - name: create /etc/cluster directory
-  file:
+  ansible.builtin.file:
     path: '/etc/cluster'
     state: 'directory'
     mode: '0755'
 
 - name: generate fence_xvm key
-  command: dd if=/dev/urandom of=/etc/cluster/fence_xvm.key bs=4k count=1
+  ansible.builtin.command: dd if=/dev/urandom of=/etc/cluster/fence_xvm.key bs=4k count=1
   notify: restart fence_virtd service
   args:
     creates: /etc/cluster/fence_xvm.key
 
 # https://github.com/ClusterLabs/fence-agents/pull/513
 - name: copy fence_xvm.key into fence_xvm-protected.key file with stricter permissions
-  copy:
+  ansible.builtin.copy:
     remote_src: true
     src: /etc/cluster/fence_xvm.key
     dest: /etc/cluster/fence_xvm-protected.key
     mode: '0600'
 
 - name: make fence_xvm.key readable by everyone
-  file:
+  ansible.builtin.file:
     path: '/etc/cluster/fence_xvm.key'
     mode: '0644'
   notify: restart fence_virtd service
 
 - name: generate /etc/fence_virt.conf configuration
-  template:
+  ansible.builtin.template:
     src: 'fence_virt.conf.j2'
     dest: '/etc/fence_virt.conf'
     mode: '0600'
   notify: restart fence_virtd service
 
 - name: configure firewall for fence_virtd
-  firewalld:
+  ansible.builtin.firewalld:
     port: "{{ item }}"
     permanent: true
     state: 'enabled'
@@ -49,7 +49,7 @@
   when: use_firewalld|bool
 
 - name: start and enable fence_virtd service
-  service:
+  ansible.builtin.service:
     name: 'fence_virtd'
     state: 'started'
     enabled: true
