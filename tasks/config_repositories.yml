@@ -4,34 +4,34 @@
     - config_repositories|bool
     - ansible_facts["distribution"] == 'Fedora'
   ansible.builtin.copy:
-     dest: '/etc/yum.repos.d/fast-vm.repo'
-     content: |
-         [fast-vm]
-         name=fast-vm
-         baseurl=https://www.famera.cz/fast-vm-repo/unified-rpm-fedora/
-         enabled=1
-         metadata_expire=7d
-         repo_gpgcheck=1
-         type=rpm
-         gpgcheck=1
-         gpgkey=https://www.famera.cz/fast-vm-repo/fast-vm-repo-2026-2031-eddsa.gpg.txt
+    dest: '/etc/yum.repos.d/fast-vm.repo'
+    content: |
+        [fast-vm]
+        name=fast-vm
+        baseurl=https://www.famera.cz/fast-vm-repo/unified-rpm-fedora/
+        enabled=1
+        metadata_expire=7d
+        repo_gpgcheck=1
+        type=rpm
+        gpgcheck=1
+        gpgkey=https://www.famera.cz/fast-vm-repo/fast-vm-repo-2026-2031-eddsa.gpg.txt
 
 - name: configure unified fast-vm yum repository (EL)
   when:
     - config_repositories|bool
     - ansible_facts["distribution"] in ['RedHat', 'CentOS', 'AlmaLinux']
   ansible.builtin.copy:
-     dest: '/etc/yum.repos.d/fast-vm.repo'
-     content: |
-         [fast-vm]
-         name=fast-vm
-         baseurl=https://www.famera.cz/fast-vm-repo/unified-rpm-el/
-         enabled=1
-         metadata_expire=7d
-         repo_gpgcheck=1
-         type=rpm
-         gpgcheck=1
-         gpgkey=https://www.famera.cz/fast-vm-repo/fast-vm-repo-2026-2031-rsa.gpg.txt
+    dest: '/etc/yum.repos.d/fast-vm.repo'
+    content: |
+        [fast-vm]
+        name=fast-vm
+        baseurl=https://www.famera.cz/fast-vm-repo/unified-rpm-el/
+        enabled=1
+        metadata_expire=7d
+        repo_gpgcheck=1
+        type=rpm
+        gpgcheck=1
+        gpgkey=https://www.famera.cz/fast-vm-repo/fast-vm-repo-2026-2031-rsa.gpg.txt
 
 - name: configure fast-vm-epel-deps yum repository (EL)
   when:
