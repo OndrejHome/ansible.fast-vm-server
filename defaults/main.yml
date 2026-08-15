@@ -33,7 +33,7 @@ fastvm_group: libvirt
 
 ## name of VG where fast-vm thinpool LV is located
 # required by: config_storage, config_fastvm_conf
-fastvm_vg: c7vg
+fastvm_vg: "{{ ansible_facts['lvm']['vgs'] | first }}"
 
 ## name of fast-vm thinpool LV
 # required by: config_storage, config_fastvm_conf

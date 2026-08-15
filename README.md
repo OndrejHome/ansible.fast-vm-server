@@ -81,6 +81,7 @@ Role Variables
     ```
 
   - name of VG where fast-vm thinpool LV is located
+    - if not specified defaults to first VG on system detected by ansible (`ansible_facts['lvm']['vgs'] | first`)
     - **required by:** *config_storage, config_fastvm_conf*
     ```
     fastvm_vg: a10vg
@@ -157,11 +158,9 @@ Role Variables
 Example Playbook
 ----------------
 
-**Example A:** Install and configure defaults on first VG on the system (good for system that have only one VG)
+**Example A:** Install and configure defaults on first VG on the system (good for system that have only one VG with at least 50GB of free space)
 
     - hosts: servers
-      vars:
-        fastvm_vg: "{{ ansible_lvm.vgs | first }}"
       roles:
         - { role: ondrejhome.fast-vm-server }
 
