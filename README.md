@@ -6,6 +6,10 @@ This role configures OS for use with fast-vm, installs it, configures it and opt
 Requirements
 ------------
 
+This role depends on following ansible collections:
+- comunity.general (tested with version 13.3.0)
+- comunity.libvirt (tested with version 2.3.0)
+
 This roles was tested on following systems and versions:
 - AlmaLinux 8.10, 9.8, 10.2
 - RHEL 8.10, 9.8, 10.2
