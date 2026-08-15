@@ -2,8 +2,8 @@
 - name: Workaround for Fedora systems python3-libdnf5 package
   # https://github.com/ansible/ansible/issues/84206
   when:
-    - ansible_distribution == 'Fedora'
-    - ansible_distribution_major_version in ['41','42','43','44']
+    - ansible_facts["distribution"] == 'Fedora'
+    - ansible_facts["distribution_major_version"] in ['41','42','43','44']
   block:
     - name: (fedora-workaround) Fetch list of installed RPMs
       command: rpm -qa
@@ -18,13 +18,13 @@
 - name: (RPM) Install RPM fast-vm
   dnf:
     name: fast-vm
-  when: ansible_distribution in [ 'Fedora', 'AlmaLinux', 'RedHat', "CentOS" ]
+  when: ansible_facts["distribution"] in [ 'Fedora', 'AlmaLinux', 'RedHat', "CentOS" ]
 
 - name: (DEB) Install DEB fast-vm
   apt:
     cache_valid_time: 3600
     name: fast-vm
-  when: ansible_distribution in [ 'Debian', 'Ubuntu' ]
+  when: ansible_facts["distribution"] in [ 'Debian', 'Ubuntu' ]
 
 - name: Install extra packages (needed by ansible playbook)
   package:

@@ -2,7 +2,7 @@
 - name: configure unified fast-vm yum repository (Fedora)
   when:
     - config_repositories|bool
-    - ansible_distribution == 'Fedora'
+    - ansible_facts["distribution"] == 'Fedora'
   copy:
      dest: '/etc/yum.repos.d/fast-vm.repo'
      content: |
@@ -19,7 +19,7 @@
 - name: configure unified fast-vm yum repository (EL)
   when:
     - config_repositories|bool
-    - ansible_distribution in ['RedHat', 'CentOS', 'AlmaLinux']
+    - ansible_facts["distribution"] in ['RedHat', 'CentOS', 'AlmaLinux']
   copy:
      dest: '/etc/yum.repos.d/fast-vm.repo'
      content: |
@@ -36,7 +36,7 @@
 - name: configure fast-vm-epel-deps yum repository (EL)
   when:
     - config_repositories|bool
-    - ansible_distribution in ['RedHat', 'CentOS', 'AlmaLinux']
+    - ansible_facts["distribution"] in ['RedHat', 'CentOS', 'AlmaLinux']
   copy:
     dest: '/etc/yum.repos.d/epel-deps.repo'
     content: |
@@ -52,7 +52,7 @@
 - name: Debian/Ubuntu repository configuration
   when:
     - config_repositories|bool
-    - ansible_distribution in ['Debian', 'Ubuntu']
+    - ansible_facts["distribution"] in ['Debian', 'Ubuntu']
   block:
     - name: configure unified fast-vm apt repository (Debian/Ubuntu)
       copy:

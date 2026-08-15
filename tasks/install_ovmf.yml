@@ -2,13 +2,13 @@
 - name: install ovmf-symlink on EL systems
   dnf:
     name: ovmf-symlink
-  when: ansible_distribution in [ 'AlmaLinux', 'RedHat' ]
+  when: ansible_facts["distribution"] in [ 'AlmaLinux', 'RedHat' ]
 
 - name: install DEB ovmf-symlink
   apt:
     cache_valid_time: 3600
     name: ovmf-symlink
-  when: ansible_distribution+ansible_distribution_major_version in [ 'Debian13', 'Ubuntu24' ]
+  when: ansible_facts["distribution"]+ansible_facts["distribution_major_version"] in [ 'Debian13', 'Ubuntu24' ]
 
 - name: get details about present OVMF files
   ansible.builtin.stat:
